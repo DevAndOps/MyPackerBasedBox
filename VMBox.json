@@ -1,0 +1,21 @@
+{
+  "variables": {
+    "source_virtualbox_location": "{{env `SOURCE_VIRTUALBOX_LOCATION`}}",
+    "ssh_username": "{{env `SSH_USERNAME`}}",
+    "ssh_password": "{{env `SSH_PASSWORD`}}"
+  },  
+  "builders": [{
+    "type": "virtualbox-ovf",
+    "source_path": "{{ user `source_virtualbox_location` }}",
+    "headless": "false",
+    "vm_name": "shanBox",
+    "ssh_username": "{{ user `ssh_username` }}",
+    "ssh_password": "{{ user `ssh_password` }}",
+    "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+  }],
+  "post-processors": [{
+    "output": "Box/ShanVM.box",
+    "keep_input_artifact": true,
+    "type": "vagrant"
+  }]
+}
