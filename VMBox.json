@@ -2,20 +2,29 @@
   "variables": {
     "source_virtualbox_location": "{{env `SOURCE_VIRTUALBOX_LOCATION`}}",
     "ssh_username": "{{env `SSH_USERNAME`}}",
-    "ssh_password": "{{env `SSH_PASSWORD`}}"
+    "ssh_password": "{{env `SSH_PASSWORD`}}",
+    "final_boxfilename": "{{env `FINAL_BOXFILENAME`}}"
   },  
   "builders": [{
     "type": "virtualbox-ovf",
     "source_path": "{{ user `source_virtualbox_location` }}",
     "headless": "false",
-    "vm_name": "shanBox",
+    "vm_name": "BaseBoxVM",
     "ssh_username": "{{ user `ssh_username` }}",
     "ssh_password": "{{ user `ssh_password` }}",
     "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
   }],
   "post-processors": [{
-    "output": "Box/ShanVM.box",
+    "output": "Box/{{ user `final_boxfilename` }}.box",
     "keep_input_artifact": true,
     "type": "vagrant"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "inline": [
+      "apt-get -y install curl",
+      "curl -sSL https://get.docker.com/ | sh"
+    ]
   }]
 }
