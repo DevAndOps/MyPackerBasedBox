@@ -23,8 +23,9 @@
     "type": "shell",
     "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
     "inline": [
-      "apt-get -y install curl",
-      "curl -sSL https://get.docker.com/ | sh"
+      "apt -y install curl",
+      "apt -y install jq",
+      "apt -y install docker"
     ]
   }]
 }
