@@ -25,7 +25,7 @@
     "inline": [
       "apt -y install curl",
       "apt -y install jq",
-      "apt -y install docker"
+      "curl -sSL https://get.docker.com/ | sh"
     ]
   }]
 }
